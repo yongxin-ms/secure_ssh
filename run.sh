@@ -1,6 +1,8 @@
-#! /bin/bash
-cat /var/log/secure|awk '/Failed/{print $(NF-3)}'|sort|uniq -c|awk '{print $2"="$1;}' > /usr/local/bin/black.list
-for i in `cat  /usr/local/bin/black.list`
+#!/bin/bash
+basepath=$(cd `dirname $0`; pwd)
+logfile=$basepath/black.list
+cat /var/log/secure|awk '/Failed/{print $(NF-3)}'|sort|uniq -c|awk '{print $2"="$1;}' > $logfile
+for i in `cat  $logfile`
 do
   IP=`echo $i |awk -F= '{print $1}'`
   NUM=`echo $i|awk -F= '{print $2}'`
