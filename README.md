@@ -15,7 +15,7 @@ linux机器的安全脚本，实现ssh访问控制，多次失败登录即封掉
 
 解决方法
 
-在Centos机器上运行run_centos.sh
+在Centos7机器上运行run_centos7.sh
 
 在Ubuntu机器上运行run_ubuntu.sh
 
