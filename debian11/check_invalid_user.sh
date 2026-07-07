@@ -1,7 +1,7 @@
 #!/bin/bash
 basepath=$(cd `dirname $0`; pwd)
-logfile=$basepath/black.list
-cat /var/log/auth.log |awk '/Invalid/{print $(NF-2)}'|sort|uniq -c|awk '{print $2"="$1;}' > $logfile
+logfile=$basepath/invalid_user.list
+cat /var/log/auth.log|awk '/Connection closed by invalid user/{print $(NF-3)}'|sort|uniq -c|awk '{print $2"="$1;}' > $logfile
 for i in `cat  $logfile`
 do
   IP=`echo $i |awk -F= '{print $1}'`
