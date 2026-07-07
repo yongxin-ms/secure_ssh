@@ -1,1 +1,2 @@
-black.list
+centos7/invalid_user.list
+centos7/wrong_passwd.list
