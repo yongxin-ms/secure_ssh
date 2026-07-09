@@ -15,7 +15,7 @@ awk '/Failed/ {print $(NF-3)}' /var/log/secure |
 
 while IFS='=' read -r IP NUM; do
 	[[ -z "$IP" || -z "$NUM" ]] && continue
-	if ((NUM > 5)); then
+	if ((NUM > 4)); then
 		if ! grep -qF "$IP" /etc/hosts.deny; then
 			echo "sshd:$IP:deny" >>/etc/hosts.deny
 			echo "[$(date '+%F %T')] Blocked $IP (attempts: $NUM)"

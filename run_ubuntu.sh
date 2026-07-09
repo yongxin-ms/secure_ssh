@@ -18,7 +18,7 @@ awk '/Failed/ {print $(NF-3)}' /var/log/auth.log |
 # Block IPs exceeding the failure threshold
 while IFS='=' read -r IP NUM; do
 	[[ -z "$IP" || -z "$NUM" ]] && continue
-	if ((NUM > 5)); then
+	if ((NUM > 4)); then
 		# -q: silent, -F: fixed string (prevents IP dots from being treated as regex)
 		if ! grep -qF "$IP" /etc/hosts.deny; then
 			echo "sshd:$IP:deny" >>/etc/hosts.deny
