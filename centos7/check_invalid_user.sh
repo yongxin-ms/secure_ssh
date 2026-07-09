@@ -1,16 +1,24 @@
 #!/bin/bash
-basepath=$(cd `dirname $0`; pwd)
-logfile=$basepath/invalid_user.list
-cat /var/log/secure|awk '/Invalid user/{print $(NF-2)}'|sort|uniq -c|awk '{print $2"="$1;}' > $logfile
-for i in `cat  $logfile`
-do
-  IP=`echo $i |awk -F= '{print $1}'`
-  NUM=`echo $i|awk -F= '{print $2}'`
-  if [ $NUM -gt 5 ]; then
-    grep $IP /etc/hosts.deny > /dev/null
-    if [ $? -gt 0 ];then
-      echo "sshd:$IP:deny" >> /etc/hosts.deny
-    fi
-  fi
-done
+set -euo pipefail
 
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root" >&2
+	exit 1
+fi
+
+basepath=$(cd "$(dirname "$0")" && pwd)
+logfile="$basepath/invalid_user.list"
+
+awk '/Invalid user/ {print $(NF-2)}' /var/log/secure |
+	sort | uniq -c |
+	awk '{print $2"="$1}' >"$logfile"
+
+while IFS='=' read -r IP NUM; do
+	[[ -z "$IP" || -z "$NUM" ]] && continue
+	if ((NUM > 5)); then
+		if ! grep -qF "$IP" /etc/hosts.deny; then
+			echo "sshd:$IP:deny" >>/etc/hosts.deny
+			echo "[$(date '+%F %T')] Blocked $IP (attempts: $NUM)"
+		fi
+	fi
+done <"$logfile"

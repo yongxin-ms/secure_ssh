@@ -1,5 +1,8 @@
 #!/bin/bash
-basepath=$(cd `dirname $0`; pwd)
+set -euo pipefail
 
-$basepath/centos7/check_invalid_user.sh
-$basepath/centos7/check_wrong_passwd.sh
+basepath=$(cd "$(dirname "$0")" && pwd)
+scripts_dir="$basepath/centos7"
+
+"$scripts_dir/check_invalid_user.sh"
+"$scripts_dir/check_wrong_passwd.sh"
