@@ -1,3 +1,2 @@
-invalid_user.list
-wrong_passwd.list
+*.list
 *.log
