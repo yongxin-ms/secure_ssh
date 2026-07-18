@@ -9,7 +9,7 @@ fi
 basepath=$(cd "$(dirname "$0")" && pwd)
 logfile="$basepath/failed_password.list"
 
-awk '/Failed/ {print $(NF-3)}' /var/log/secure |
+awk '/Failed password for/ {print $(NF-3)}' /var/log/secure |
 	sort | uniq -c |
 	awk '{print $2"="$1}' >"$logfile"
 
