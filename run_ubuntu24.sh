@@ -10,8 +10,5 @@ if [ ! -d "$openssh_dir" ]; then
 fi
 
 find "$openssh_dir" -maxdepth 1 -type f -name '*.sh' | sort | while read -r script; do
-	echo "===================="
-	echo "Running $(basename "$script")"
-	echo "===================="
 	bash "$script"
 done
