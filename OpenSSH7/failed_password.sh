@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 basepath=$(cd "$(dirname "$0")" && pwd)
-logfile="$basepath/wrong_passwd.list"
+logfile="$basepath/failed_password.list"
 
 awk '/Failed/ {print $(NF-3)}' /var/log/secure |
 	sort | uniq -c |

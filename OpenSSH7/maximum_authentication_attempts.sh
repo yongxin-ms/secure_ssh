@@ -7,9 +7,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 basepath=$(cd "$(dirname "$0")" && pwd)
-logfile="$basepath/disconn_from_invalid_user.list"
+logfile="$basepath/maximum_authentication_attempts.list"
 
-awk '/Disconnected from invalid user/ {print $(NF-3)}' /var/log/auth.log |
+awk '/maximum authentication attempts/ {print $(NF-4)}' /var/log/secure |
 	sort | uniq -c |
 	awk '{print $2"="$1}' >"$logfile"
 
